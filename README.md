@@ -29,17 +29,18 @@ To use this tutorial, you should be familiar with terraform basic commands, and 
 
 ### 3.0	Injecting Secrets into Vault
 
+To make the credentials short termed and make them provide to developers, you would have to provide the terraform vault with the AWS credentails and then the Terraform Vault can create the short termed credentials and being them used by developers.
+
+To inject the secrets into vault, we will first start the Vault server, clone the repo which contains the Vault configuration, and the AWS resources provisioned script  by using Vault short term credentials.
 
 
+### 3.1 Start the Vault Server
 
-This repo includes two subfolders, one for deploying NodeJS application to Kubernetes cluster with Classic toolchain and while the other subfolder is for deploying the same with Tekton toolchain. 
-
-To start deploying, clone the repo to local machine using the following command and follow the instructions in next section as per the scenario available.
+Start the Vault server with the below command in development mode with token as test. 
 
 ```bash
-git clone https://github.com/marifse/nodejs-cloudant.git
+vault server -dev -dev-root-token-id="education"
 ```
-### 3.1	Using a Tekton Toolchain pipeline
 
 ### 3.1.1 To a new Kubernetes cluster
 

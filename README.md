@@ -53,32 +53,8 @@ Clone the [inject-secrets-tf-vault](https://github.com/hashicorp/learn-terraform
 ```bash
 git clone https://github.com/hashicorp/learn-terraform-inject-secrets-aws-vault && cd learn-terraform-inject-secrets-aws-vault
 ```
+The directory contains two sub-directories: Vault Admin Workspace & Operator Workspace, one for terraform injecting secrets configuration and the other for provisioning the resources on AWS.
 
-•	Replace the API key value with your key and set the other variables values as desired or required.
-
-•	Initialize the repo with below command.
-
-```bash
-terraform init
-```
-
-•	Deploy NodeJS application with below terraform command.
-
-```bash
-terraform apply
-```
-
-• Confirm with “yes”.
-
-This terraform script will provision the IKS free Classic cluster, Cloudant database, and a Tekton toolchain, which is auto triggered on its creation and deploying the application to the created IKS Kubernetes cluster.
-
-To get the URL for deployed application, go to Toolchain service in IBM Cloud console, and select the region where the toolchain has been created and go to triggered event, and there in deployment stage, you can find the application URL as IPAddress:port in last lines of the executions. Open that URL in browser and you can see the NodeJS application deployed there.
-
-•	To destroy the deployment run below terraform command.
-
-```bash
-terraform destroy
-```
 
 ### 3.2	Using a Classic Toolchain pipeline
 

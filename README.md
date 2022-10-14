@@ -10,7 +10,8 @@
 #### 3.3      Configure AWS Secret Engine into Vault
 #### 4.     Provisioning the Resources on AWS
 #### 4.1      Destroying the Resources
-
+#### 4.2      Resrtict Vault Role Permissions
+#### 4.3      Benefits and considerations
  
 ### 1.0 Introduction
 
@@ -231,7 +232,7 @@ This change restricts the Terraform Operator's ability to provision any AWS EC2 
 
 Apply the Terraform configuration, remember to confirm the run with a yes.
 
-``bash
+```bash
 $ terraform apply
 ```
 

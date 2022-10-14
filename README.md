@@ -36,11 +36,15 @@ To inject the secrets into vault, we will first start the Vault server, clone th
 
 ### 3.1 Start the Vault Server
 
-Start the Vault server with the below command in development mode with token as test. 
+Start the Vault server with the below command in development mode with root token as test. 
 
 ```bash
-vault server -dev -dev-root-token-id="education"
+vault server -dev -dev-root-token-id="test"
 ```
+Your Vault server should be running up now, browse to localhost:8200 or 127.0.0.1:8200 and login into the instance using your root token: test
+
+![5](https://user-images.githubusercontent.com/50728232/195939290-f1236695-03eb-47ab-a2ee-352777962a9c.png)
+
 
 ### 3.1.1 To a new Kubernetes cluster
 

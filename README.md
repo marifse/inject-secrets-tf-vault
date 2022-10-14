@@ -9,6 +9,7 @@
 #### 3.2	    Cloning the Repo
 #### 3.3      Configure AWS Secret Engine into Vault
 #### 4.     Provisioning the Resources on AWS
+#### 4.1      Destroying the Resources
 
  
 ### 1.0 Introduction
@@ -172,7 +173,7 @@ The Terraform Operator doesn't have to manage long-lived AWS credentials locally
 
 After 120 seconds, you should see the following in the terminal running Vault.
 
-``bash
+```bash
 2020-07-13T16:07:55.755-0700 [INFO]  expiration: revoked lease: lease_id=dynamic-aws-creds-vault-admin-path/creds/dynamic-aws-creds-vault-admin-role/z1PKR7Y623fk0ZQWW1kwaVVY
 ```
 This shows that Vault has destroyed the short-lived AWS credentials generated for the apply run.
@@ -181,7 +182,7 @@ This shows that Vault has destroyed the short-lived AWS credentials generated fo
 
 Destroy the EC2 instance, remember to confirm the run with a yes.
 
-``bash
+```bash
 $ terraform destroy
 ```
 This run should have generated and used another set of IAM credentials. Verify that your EC2 instance has been destroyed by viewing the EC2 page of your AWS Console.

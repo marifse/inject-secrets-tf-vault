@@ -1,4 +1,4 @@
-# inject-secrets-tf-vault
+# Injecting Secrets into Terraform Vault
 
 ### Contents
 

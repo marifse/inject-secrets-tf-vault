@@ -43,7 +43,7 @@ vault server -dev -dev-root-token-id="test"
 ```
 Your Vault server should be running up now, browse to localhost:8200 or 127.0.0.1:8200 and login into the instance using your root token: test
 
-![5](https://user-images.githubusercontent.com/50728232/195939290-f1236695-03eb-47ab-a2ee-352777962a9c.png)
+![image](https://user-images.githubusercontent.com/50728232/195939638-2da00fd2-3205-4a36-a0aa-6af54f058da4.png)
 
 
 ### 3.1.1 To a new Kubernetes cluster

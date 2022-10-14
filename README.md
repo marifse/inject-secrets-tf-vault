@@ -39,7 +39,7 @@ To inject the secrets into vault, we will first start the Vault server, clone th
 Start the Vault server with the below command in development mode with root token as test. 
 
 ```bash
-vault server -dev -dev-root-token-id="test"
+$ vault server -dev -dev-root-token-id="test"
 ```
 Your Vault server should be running up now, browse to localhost:8200 or 127.0.0.1:8200 and login into the instance using your root token: test
 
@@ -51,16 +51,70 @@ Your Vault server should be running up now, browse to localhost:8200 or 127.0.0.
 Clone the [inject-secrets-tf-vault](https://github.com/hashicorp/learn-terraform-inject-secrets-aws-vault) with the below command, this repo contains the configuration to inject the secrets into the vault.
 
 ```bash
-git clone https://github.com/hashicorp/learn-terraform-inject-secrets-aws-vault && cd learn-terraform-inject-secrets-aws-vault
+$ git clone https://github.com/hashicorp/learn-terraform-inject-secrets-aws-vault && cd learn-terraform-inject-secrets-aws-vault
 ```
 The directory contains two sub-directories: Vault Admin Workspace & Operator Workspace, one for terraform injecting secrets configuration and the other for provisioning the resources on AWS.
 
 
-### 3.2	Using a Classic Toolchain pipeline
+### 3.3	Configure AWS Secret Engine into Vault
 
-To deploy NodeJS to a new Kubernetes cluster using Classic Toolchain pipeline, there are two options either deploying to existing Kubernetes cluster or to a new Kubernetes cluster.
+In another terminal window (leave the Vault instance running), navigate to the Vault Admin directory.
 
-### 3.2.1 To a new Kubernetes cluster
+```bash
+$ cd vault-admin-workspace
+```
+
+In the main.tf file, you will find 2 resources:
+
+the vault_aws_secret_backend.aws resource configures AWS Secrets Engine to generate a dynamic token that lasts for 2 minutes.
+
+the vault_aws_secret_backend_role.admin resource configures a role for the AWS Secrets Engine named dynamic-aws-creds-vault-admin-role with an IAM policy that allows it iam:* and ec2:* permissions.
+
+This role will be used by the Terraform Operator workspace to dynamically generate AWS credentials scoped to this IAM policy.
+
+Before applying this configuration, set the required Terraform variable substituting <AWS_ACCESS_KEY_ID> and <AWS_SECRET_ACCESS_KEY> with your AWS Credentials. Notice that we're also setting the required Vault Provider arguments as environment variables: VAULT_ADDR & VAULT_TOKEN.
+
+```bash
+$ export TF_VAR_aws_access_key=<AWS_ACCESS_KEY_ID>
+$ export TF_VAR_aws_secret_key=<AWS_SECRET_ACCESS_KEY>
+$ export VAULT_ADDR=http://127.0.0.1:8200
+$ export VAULT_TOKEN=education
+```
+Initialize the Vault Admin workspace.
+```bash
+$ terraform init
+```
+
+In your initialized directory, run terraform apply, review the planned actions, and confirm the run with a yes
+
+```bash
+$ terraform apply
+
+## ...
+
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+
+The state of your infrastructure has been saved to the path
+below. This state is required to modify and destroy your
+infrastructure, so keep it safe. To inspect the complete state
+use the `terraform show` command.
+
+State path: terraform.tfstate
+
+Outputs:
+
+backend = "dynamic-aws-creds-vault-admin-path"
+role = "dynamic-aws-creds-vault-admin-role"
+```
+Notice that there are two output variables named backend and role. These output variables will be used by the Terraform Operator workspace in a later step.
+
+If you go to the terminal where your Vault server is running, you should see Vault output something similar to the below. This means Terraform was successfully able to mount the AWS Secrets Engine at the specified path. The role has also been configured although it's not output in the logs.
+
+```bash
+[INFO]  core: successful mount: namespace= path=dynamic-aws-creds-vault-admin-path/ type=aws
+```
+
+### 3.3 To a new Kubernetes cluster
 
 Clone the repo as told in above step 3.0, and follow the below steps. 
 

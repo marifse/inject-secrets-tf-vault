@@ -60,19 +60,18 @@ The directory contains two sub-directories: Vault Admin Workspace & Operator Wor
 
 ### 3.3	Configure AWS Secret Engine into Vault
 
-In another terminal window (leave the Vault instance running), navigate to the Vault Admin directory.
+In another terminal window (leave the Vault instance running), go to the Vault Admin directory.
 
 ```bash
 $ cd vault-admin-workspace
 ```
 
-In the main.tf file, you will find 2 resources:
+In the main.tf file, there are two resources:
 
-the vault_aws_secret_backend.aws resource configures AWS Secrets Engine to generate a dynamic token that lasts for 2 minutes.
+**vault_aws_secret_backend.aws** resource: configures AWS Secrets Engine to generate a dynamic token that lasts for 2 minutes.
+**vault_aws_secret_backend_role.admin** resource: configures a role for the AWS Secrets Engine named dynamic-aws-creds-vault-admin-role with an IAM policy that allows it iam:* and ec2:* permissions.
 
-the vault_aws_secret_backend_role.admin resource configures a role for the AWS Secrets Engine named dynamic-aws-creds-vault-admin-role with an IAM policy that allows it iam:* and ec2:* permissions.
-
-This role will be used by the Terraform Operator workspace to dynamically generate AWS credentials scoped to this IAM policy.
+Th role will be used by the Terraform Operator workspace to dynamically generate AWS credentials scoped to this IAM policy.
 
 Before applying this configuration, set the required Terraform variable substituting <AWS_ACCESS_KEY_ID> and <AWS_SECRET_ACCESS_KEY> with your AWS Credentials. Notice that we're also setting the required Vault Provider arguments as environment variables: VAULT_ADDR & VAULT_TOKEN.
 

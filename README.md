@@ -46,14 +46,12 @@ Your Vault server should be running up now, browse to localhost:8200 or 127.0.0.
 ![image](https://user-images.githubusercontent.com/50728232/195939638-2da00fd2-3205-4a36-a0aa-6af54f058da4.png)
 
 
-### 3.1.1 To a new Kubernetes cluster
+### 3.2 Cloning the Repo
 
-To deploy NodeJS to a new Kubernetes cluster, clone the repo as mentioned in above step 3.0, and follow the steps below. 
-
-•	Go into sub-directory (nodejs-cloudant/terraform/simple-kube/tekton/new-infra/) of cloned repo with below command.
+Clone the [inject-secrets-tf-vault](https://github.com/hashicorp/learn-terraform-inject-secrets-aws-vault) with the below command, this repo contains the configuration to inject the secrets into the vault.
 
 ```bash
-cd nodejs-cloudant/terraform/simple-kube/tekton/new-infra
+git clone https://github.com/hashicorp/learn-terraform-inject-secrets-aws-vault && cd learn-terraform-inject-secrets-aws-vault
 ```
 
 •	Replace the API key value with your key and set the other variables values as desired or required.

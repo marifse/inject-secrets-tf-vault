@@ -125,15 +125,19 @@ cd ../operator-workspace
 ```
 In the main.tf file, you should find the following data and resource blocks:
 
-the terraform_remote_state.admin data block retrieves the Terraform state file generated from your Vault Admin workspace
+1. the terraform_remote_state.admin data block retrieves the Terraform state file generated from your Vault Admin workspace
 
-the vault_aws_access_credentials.creds data block retrieves the dynamic, short-lived AWS credentials from your Vault instance. Notice that this uses the Vault Admin workspace's output variables: backend and role
+2. the vault_aws_access_credentials.creds data block retrieves the dynamic, short-lived AWS credentials from your Vault instance. Notice that this uses the Vault Admin workspace's output variables: backend and role
 
-the aws provider is initialized with the short-lived credentials retrieved by vault_aws_access_credentials.creds. The provider is configured to the us-east-1 region, as defined by the region variable
+3. the aws provider is initialized with the short-lived credentials retrieved by vault_aws_access_credentials.creds. The provider is configured to the us-east-1 region, as defined by the region variable
 
-the aws_ami.ubuntu data block retrieves the most recent Ubuntu image
+4. the aws_ami.ubuntu data block retrieves the most recent Ubuntu image
 
-the aws_instance.main resource block creates an t2.micro EC2 instance
+5. the aws_instance.main resource block creates an t2.micro EC2 instance
+
+```bash
+Tip: We recommend using provider-specific data sources when convenient. terraform_remote_state is more flexible, but requires access to the whole Terraform state.
+```
 
 Initialize the Terraform Operator workspace.
 
@@ -230,27 +234,25 @@ Apply the Terraform configuration, remember to confirm the run with a yes.
 $ terraform apply
 ```
 
-•	Replace the **API key** value with your key and set the **Kubernetes cluster name** and the **Cloudant database name** with your existing IKS cluster name and Cloudant DB name, and other variables as desired.
+### 4.3 Benefits and considerations
 
-•	Initialize the repo with below terraform command.
+This approach to secret injection:
 
-```bash
-terraform init
-```
+1. alleviates the Vault Admin's responsibility in managing numerous, multi-scoped, long-lived AWS credentials,
 
-•	Deploy NodeJS with below terraform command.
+2. reduces the risk from a compromised AWS credential in a Terraform run (if a malicious user gains access to an AWS credential used in a Terraform run, that credential is only value for the length of the token's TTL),
 
-```bash
-terraform apply
-```
+3. allows for management of a role's permissions through a Vault role rather than the distribution/management of static AWS credentials,
 
-• Confirm with **yes**.
+4. enables development to provision resources without managing local, static AWS credentials
 
-Once all the resources have been provisioned, you can go to the Toolchain service in IBM Cloud console, and in deployed region you would find the delivery pipeline, there would be three stages, and in third deployment stage, you would find the URL for your NodeJS application deployed over there. You can open that URL in browser and see your application running.
+However, this approach may run into issues when applied to large multi-resource configurations. The generated dynamic AWS Credentials are only valid for the length of the token's TTL. As a result, if:
 
-•	To destroy the deployment run below terraform command.
+1. the apply process exceeds than the TTL and the configuration needs to provision another resource or
 
-```bash
-terraform destroy
-```
+2. the apply confirmation time exceeds the TTL
+
+the apply process will fail because the short-lived AWS Credentials have expired.
+
+You could increase the TTL to conform to your situation; however, this also increases how long the temporary AWS credentials are valid, increasing the malicious actor's attack surface.
 

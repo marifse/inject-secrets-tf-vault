@@ -23,9 +23,9 @@ In this tutorial, you will learn how to start the vault and push/inject the secr
 
 To use this tutorial, you should be familiar with terraform basic commands, and vault basic commands. And should have the following running:
 
-  -	Terraform installed locally
-  -	Vault installed locally
-  -	An AWS account and AWS_Access_key/AWS_Secret_Key credentials
+  -	Terraform installed locally - [How to Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+  -	Vault installed locally - [How to install Terraform Vault] (https://learn.hashicorp.com/tutorials/vault/getting-started-install)
+  -	An AWS account and AWS_Access_key/AWS_Secret_Key credentials - [Create Credentails for AWS User](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/getting-your-credentials.html)
 
 ### 3.0	Injecting Secrets into Vault
 
